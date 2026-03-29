@@ -143,10 +143,10 @@ function onReceiveMIDI(message)
       handleFeedback('cue_', cc - 80, deck, val)
     end
 
-    -- Loops: CC 31-38
-    if cc >= 31 and cc <= 38 then
+    -- Loops: CC 91-98
+    if cc >= 91 and cc <= 98 then
 --      print('[onReceiveMIDI] LOOP triggered')
-      handleFeedback('loop_', cc - 30, deck, val)
+      handleFeedback('loop_', cc - 90, deck, val)
     end
 
     -- Toggles
