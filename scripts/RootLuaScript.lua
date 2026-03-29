@@ -38,39 +38,58 @@ function searchChildren(parent, name)
   return nil
 end
 
+function findAllControls(name)
+  local results = {}
+  collectChildren(root, name, results)
+  return results
+end
+
+function collectChildren(parent, name, results)
+  for i = 1, #parent.children do
+    local child = parent.children[i]
+    if child.name == name then
+      results[#results + 1] = child
+    end
+    if #child.children > 0 then
+      collectChildren(child, name, results)
+    end
+  end
+end
+
 function handleFeedback(prefix, num, deck, val)
   local baseName = prefix .. deck .. '_' .. num
   local shapeName = baseName .. '_bg'
-  
---  print('[handleFeedback] prefix=' .. prefix .. ' num=' .. num .. ' deck=' .. deck .. ' val=' .. val)
---  print('[handleFeedback] Looking for shape: ' .. shapeName)
-  
-  local shape = findControl(shapeName)
-  
-  if shape then
-    print('[handleFeedback] FOUND shape: ' .. shapeName)
-    
-    if not baseColors[baseName] then
-      local btn = findControl(baseName)
-      if btn then
-        local c = btn.properties.color
-        baseColors[baseName] = { r = c.r, g = c.g, b = c.b }
---        print('[handleFeedback] Cached color from: ' .. baseName)
-      else
-        print('[handleFeedback] WARNING: Button not found: ' .. baseName)
-      end
+
+  print('[handleFeedback] ENTER prefix=' .. prefix .. ' num=' .. tostring(num) .. ' deck=' .. tostring(deck) .. ' val=' .. tostring(val) .. ' => shapeName=' .. shapeName)
+
+  if not baseColors[baseName] then
+    local btn = findControl(baseName)
+    if btn then
+      local c = btn.properties.color
+      baseColors[baseName] = { r = c.r, g = c.g, b = c.b }
+      print('[handleFeedback] cached color r=' .. c.r .. ' g=' .. c.g .. ' b=' .. c.b)
+    else
+      print('[handleFeedback] WARNING: Button not found: ' .. baseName)
     end
-    
-    local bc = baseColors[baseName]
+  end
+
+  local bc = baseColors[baseName]
+  local shapes = findAllControls(shapeName)
+  print('[handleFeedback] findAllControls("' .. shapeName .. '") count=' .. #shapes)
+  for i, shape in ipairs(shapes) do
+    local curC = shape.properties.color
+    local curVal = shape.values.x
+    print('[handleFeedback] shape[' .. i .. '] current alpha=' .. tostring(curC.a) .. ' value.x=' .. tostring(curVal))
     if bc then
       local newAlpha = val == 127 and alphaSet or alphaOff
---      print('[handleFeedback] Setting alpha=' .. newAlpha .. ' for ' .. shapeName)
+      if newAlpha > 0 then
+        print('!!! [handleFeedback] NON-ZERO alpha SET: ' .. shapeName .. '[' .. i .. '] alpha=' .. newAlpha .. ' val=' .. val)
+      end
+      print('[handleFeedback] setting shape[' .. i .. '] alpha=' .. newAlpha)
       shape.properties.color = Color(bc.r, bc.g, bc.b, newAlpha)
     else
---      print('[handleFeedback] WARNING: No cached color for ' .. baseName)
+      print('[handleFeedback] WARNING: no cached color for ' .. baseName .. ', skipping shape[' .. i .. ']')
     end
-  else
---    print('[handleFeedback] NOT FOUND shape: ' .. shapeName)
   end
 end
 
@@ -82,8 +101,12 @@ function handleToggleFeedback(num, deck, val)
     local shapeName = baseName .. '_' .. colorName .. '_bg'
     local shape = findControl(shapeName)
     if shape then
+      local tAlpha = val == 127 and alphaSet or alphaOff
+      if tAlpha > 0 then
+        print('!!! [handleToggleFeedback] NON-ZERO alpha SET: ' .. shapeName .. ' alpha=' .. tAlpha .. ' val=' .. val)
+      end
       print('shapeName ' .. shapeName)
-      shape.properties.color = Color(rgb.r, rgb.g, rgb.b, val == 127 and alphaSet or alphaOff)
+      shape.properties.color = Color(rgb.r, rgb.g, rgb.b, tAlpha)
     else 
 --      print('shapeName not found ' .. shapeName)
     end
@@ -96,7 +119,18 @@ function onReceiveMIDI(message)
   local cc  = message[2]
   local val = message[3]
 
-  print('[MIDI] ch=' .. channel .. ' cc=' .. cc .. ' val=' .. val)
+  print('[MIDI] ch=' .. channel .. ' cc=' .. cc .. ' val=' .. val .. ' msgType=0x' .. string.format('%X', msgType))
+
+  -- Log ALL loop_*_bg current states on every ch15/16 message
+  if channel == 15 or channel == 16 then
+    local deck = channel == 15 and 1 or 2
+    for num = 1, 8 do
+      local bg = findControl('loop_' .. deck .. '_' .. num .. '_bg')
+      if bg then
+        print('[STATE] loop_' .. deck .. '_' .. num .. '_bg value.x=' .. tostring(bg.values.x) .. ' alpha=' .. tostring(bg.properties.color.a))
+      end
+    end
+  end
 
   if msgType == 0xB0 and (channel == 15 or channel == 16) then
     local deck = channel == 15 and 1 or 2
@@ -109,10 +143,10 @@ function onReceiveMIDI(message)
       handleFeedback('cue_', cc - 80, deck, val)
     end
 
-    -- Loops: CC 91-98
-    if cc >= 91 and cc <= 98 then
+    -- Loops: CC 31-38
+    if cc >= 31 and cc <= 38 then
 --      print('[onReceiveMIDI] LOOP triggered')
-      handleFeedback('loop_', cc - 90, deck, val)
+      handleFeedback('loop_', cc - 30, deck, val)
     end
 
     -- Toggles
@@ -125,29 +159,30 @@ end
 
 function initializeBackgrounds()
   print('[initializeBackgrounds] Clearing all cue and loop backgrounds...')
-  
+
   for deck = 1, 2 do
     -- Clear cues (1-8)
     for num = 1, 8 do
       local cueName = 'cue_' .. deck .. '_' .. num .. '_bg'
-      local cueShape = findControl(cueName)
-      if cueShape then
-        local c = cueShape.properties.color
-        cueShape.properties.color = Color(c.r, c.g, c.b, 0.0)
+      for _, shape in ipairs(findAllControls(cueName)) do
+        local c = shape.properties.color
+        shape.properties.color = Color(c.r, c.g, c.b, 0.0)
       end
     end
-    
+
     -- Clear loops (1-8)
     for num = 1, 8 do
       local loopName = 'loop_' .. deck .. '_' .. num .. '_bg'
-      local loopShape = findControl(loopName)
-      if loopShape then
-        local c = loopShape.properties.color
-        loopShape.properties.color = Color(c.r, c.g, c.b, 0.0)
+      local found = findAllControls(loopName)
+      print('[initBG] clearing ' .. loopName .. ' count=' .. #found)
+      for _, shape in ipairs(found) do
+        local c = shape.properties.color
+        print('[initBG] ' .. loopName .. ' pre-clear alpha=' .. tostring(c.a))
+        shape.properties.color = Color(c.r, c.g, c.b, 0.0)
       end
     end
   end
-  
+
   print('[initializeBackgrounds] Complete')
 end
 
