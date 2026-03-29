@@ -4,12 +4,6 @@ An updated TouchOSC controller covering most functionality for the **macOS versi
 
 ---
 
-## Screenshots
-
-<!-- Add screenshots here -->
-
----
-
 ## Requirements
 
 - **TouchOSC** by Hexler LLC — free version ([hexler.net/touchosc](https://hexler.net/touchosc)) | [Manual](https://hexler.net/touchosc/manual)
@@ -71,3 +65,13 @@ This project is provided for **educational purposes only**. No warranty is inten
 ## Support
 
 Please see [SUPPORT.md](SUPPORT.md) for details.
+
+---
+
+## Screenshots
+
+![Screenshot 1](screenshots/teee-emmedia-touch-osc-djay-pro-01.png)
+![Screenshot 2](screenshots/teee-emmedia-touch-osc-djay-pro-02.png)
+![Screenshot 3](screenshots/teee-emmedia-touch-osc-djay-pro-03.png)
+![Screenshot 4](screenshots/teee-emmedia-touch-osc-djay-pro-04.png)
+![Screenshot 5](screenshots/teee-emmedia-touch-osc-djay-pro-05.png)
