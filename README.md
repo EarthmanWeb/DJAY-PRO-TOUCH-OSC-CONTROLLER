@@ -6,7 +6,7 @@ An updated TouchOSC controller covering most functionality for the **macOS versi
 
 ## Requirements
 
-- **TouchOSC** by Hexler LLC — free version ([hexler.net/touchosc](https://hexler.net/touchosc)) | [Manual](https://hexler.net/touchosc/manual)
+- **TouchOSC** by Hexler LLC — Paid version ([hexler.net/touchosc](https://hexler.net/touchosc)) | [Manual](https://hexler.net/touchosc/manual)
   - _Note: This is for the current TouchOSC app, not the legacy TouchOSC MK1 app. Compatibility with MK1 is untested._
 - **TouchOSC Bridge** — installed on your Mac ([download](https://hexler.net/touchosc#resources))
 - **djay Pro** for macOS ([algoriddim.com](https://www.algoriddim.com/djay-pro-mac)) | [User Manual](https://help.algoriddim.com/user-manual/djay-pro-mac) | [Community Forums](https://community.algoriddim.com)
@@ -40,7 +40,7 @@ You only need these two files:
 
 Full installation instructions for each step can be found via the Hexler and Algoriddim documentation:
 
-1. **Install TouchOSC (free version) on your iPad** — [TouchOSC on the App Store](https://apps.apple.com/app/touchosc/id1569996730)
+1. **Install TouchOSC (paid version) on your iPad** — [TouchOSC on the App Store](https://apps.apple.com/app/touchosc/id1569996730)
 2. **Load the `.tosc` file onto your iPad** — [TouchOSC Editor & File Transfer docs](https://hexler.net/touchosc/manual/editor)
 3. **Install TouchOSC Bridge on your Mac** and ensure it is running — [TouchOSC Bridge download](https://hexler.net/touchosc#resources)
 4. **Configure the MIDI bridge** — [TouchOSC Connections documentation](https://hexler.net/touchosc/manual/connections-midi)
