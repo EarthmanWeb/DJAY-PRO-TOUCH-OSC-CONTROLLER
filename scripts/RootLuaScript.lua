@@ -7,6 +7,21 @@
 -- Source control: group
 -- File: TEEE-EMMEDIA.tosc
 
+-- Source control: group
+-- File: TEEE-EMMEDIA.tosc
+
+-- Source control: group
+-- File: TEEE-EMMEDIA.tosc
+
+-- Source control: group
+-- File: TEEE-EMMEDIA.tosc
+
+-- Source control: group
+-- File: TEEE-EMMEDIA.tosc
+
+-- Source control: group
+-- File: TEEE-EMMEDIA.tosc
+
 -- CONFIG
 local alphaOff = 0.0
 local alphaSet = 0.6
@@ -151,6 +166,21 @@ function onReceiveMIDI(message)
 
     -- Toggles
     handleToggleFeedback(cc, deck, val)
+
+    -- FX tab sync: switch XY tab to match slot when djay confirms activation (val=127 only)
+    local fxTabCC = { [65] = 1, [70] = 2, [75] = 3 }
+    local fxSlot = fxTabCC[cc]
+    if fxSlot and val == 127 then
+      local tabName = 'fx_' .. deck .. '_xytabs'
+      local tabControl = findControl(tabName)
+      if tabControl then
+        tabControl.values.page = fxSlot - 1
+        print('[FXTab] deck=' .. deck .. ' slot=' .. fxSlot .. ' => ' .. tabName .. '.page=' .. (fxSlot - 1))
+      else
+        print('[FXTab] WARNING: ' .. tabName .. ' not found')
+      end
+    end
+
   end
 end
 

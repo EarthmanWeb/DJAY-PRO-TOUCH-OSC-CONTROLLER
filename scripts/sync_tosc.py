@@ -51,11 +51,12 @@ def extract_scripts(xml):
 
 
 def export():
-    """Extract all scripts from .tosc and write to scripts/*.lua"""
+    """Extract all scripts from .tosc and write to scripts/*.lua, removing stale files."""
     print('Exporting scripts from .tosc...')
     xml = read_tosc()
     scripts = extract_scripts(xml)
 
+    written = set()
     seen = {}
     for name, script in scripts:
         filename = NAME_MAP.get(name, name)
@@ -68,6 +69,12 @@ def export():
         with open(path, 'w') as f:
             f.write(header + script + '\n')
         print(f'  Wrote {os.path.basename(path)}')
+        written.add(os.path.basename(path))
+
+    for fname in os.listdir(SCRIPTS_DIR):
+        if fname.endswith('.lua') and fname not in written:
+            os.remove(os.path.join(SCRIPTS_DIR, fname))
+            print(f'  Removed stale {fname}')
 
     print(f'Done. {len(scripts)} scripts exported.')
 
