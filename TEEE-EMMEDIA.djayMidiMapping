@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.3">
+<plist version="1.4">
 <dict>
 	<key>controls</key>
 	<array>
@@ -4793,16 +4793,6 @@
 			<true/>
 		</dict>
 		<dict>
-			<key>keyPath</key>
-			<string>turntable2</string>
-			<key>midiChannel</key>
-			<integer>0</integer>
-			<key>midiData</key>
-			<integer>9</integer>
-			<key>midiMessageType</key>
-			<integer>3</integer>
-		</dict>
-		<dict>
 			<key>buttonMode</key>
 			<string>toggle</string>
 			<key>controlType</key>
@@ -4958,18 +4948,6 @@
 				<key>midiChannel</key>
 				<integer>14</integer>
 			</dict>
-		</dict>
-		<dict>
-			<key>controlType</key>
-			<string>button</string>
-			<key>keyPath</key>
-			<string>turntable1</string>
-			<key>midiChannel</key>
-			<integer>15</integer>
-			<key>midiData</key>
-			<integer>0</integer>
-			<key>midiMessageType</key>
-			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>controlType</key>
