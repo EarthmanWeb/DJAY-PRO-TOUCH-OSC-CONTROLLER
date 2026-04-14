@@ -555,7 +555,7 @@
 			<key>flipped</key>
 			<true/>
 			<key>keyPath</key>
-			<string>turntable2.unmixerThreeTrackChannel1VolumeEQ</string>
+			<string>turntable2.unmixerFourTrackChannel1VolumeEQ</string>
 			<key>midiChannel</key>
 			<integer>1</integer>
 			<key>midiData</key>
@@ -574,7 +574,7 @@
 			<key>flipped</key>
 			<true/>
 			<key>keyPath</key>
-			<string>turntable2.unmixerThreeTrackChannel1Volume</string>
+			<string>turntable2.unmixerFourTrackChannel2VolumeEQ</string>
 			<key>midiChannel</key>
 			<integer>1</integer>
 			<key>midiData</key>
@@ -593,7 +593,7 @@
 			<key>flipped</key>
 			<true/>
 			<key>keyPath</key>
-			<string>turntable2.unmixerThreeTrackChannel2VolumeEQ</string>
+			<string>turntable2.unmixerFourTrackChannel3VolumeEQ</string>
 			<key>midiChannel</key>
 			<integer>1</integer>
 			<key>midiData</key>
@@ -612,7 +612,7 @@
 			<key>flipped</key>
 			<true/>
 			<key>keyPath</key>
-			<string>turntable2.unmixerThreeTrackChannel3VolumeEQ</string>
+			<string>turntable2.unmixerFourTrackChannel4VolumeEQ</string>
 			<key>midiChannel</key>
 			<integer>1</integer>
 			<key>midiData</key>
@@ -1361,10 +1361,7 @@
 			<key>midiMessageType</key>
 			<integer>3</integer>
 			<key>output</key>
-			<dict>
-				<key>controlType</key>
-				<string>control</string>
-			</dict>
+			<dict/>
 		</dict>
 		<dict>
 			<key>keyPath</key>
@@ -5018,6 +5015,16 @@
 			<integer>15</integer>
 			<key>midiData</key>
 			<integer>18</integer>
+			<key>midiMessageType</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>keyPath</key>
+			<string>turntable2</string>
+			<key>midiChannel</key>
+			<integer>0</integer>
+			<key>midiData</key>
+			<integer>0</integer>
 			<key>midiMessageType</key>
 			<integer>3</integer>
 		</dict>
